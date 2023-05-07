@@ -25,9 +25,9 @@ public class SimpleChatClient extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-    	EventBus.getDefault().register(this);
+    	EventBus.getDefault().register(this);// register for output input
     	client = SimpleClient.getClient();
-    	client.openConnection();
+    	client.openConnection();// here we connect to server
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
         stage.show();
@@ -55,7 +55,7 @@ public class SimpleChatClient extends Application {
     @Subscribe
     public void onMessageEvent(MessageEvent message) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-        Platform.runLater(() -> {
+        Platform.runLater(() -> { // there is a possible that event can sent by another thread, here we ensure it sent by javafx thrad
             Alert alert = new Alert(AlertType.INFORMATION,
                     String.format("Message:\nId: %d\nData: %s\nTimestamp: %s\n",
                             message.getMessage().getId(),
